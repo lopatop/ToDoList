@@ -1,4 +1,7 @@
 import {Button} from "./Button.tsx";
+import {useState} from "react";
+
+export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
 type TaskType = {
     id: number
@@ -11,22 +14,43 @@ type TodolistPropsType = {
     tasks: TaskType[]
 }
 
-export const Todolist = (props:TodolistPropsType) => {
-    const{title, tasks}= props
+export const Todolist = (props: TodolistPropsType) => {
+    const {title, tasks: initialTasks} = props
+
+    const [tasks, setTask] = useState(initialTasks)
+    const [filter, setFilter] = useState<onClickFilterHandlerType>('all')
+
+    const deleteTask = (id: number) => {
+        const updatedTasks = tasks.filter(task => task.id !== id)
+        setTask(updatedTasks)
+    }
+
+    let currentTasks = tasks
+    if (filter === 'active') currentTasks = tasks.filter(t => !t.isDone)
+    if (filter === 'completed') currentTasks = tasks.filter(t => t.isDone)
+
+    const onClickFilterHandler = (filterType: onClickFilterHandlerType) => {
+        setFilter(filterType)
+
+
+    }
+
 
     return (
         <div>
             <h3>{title}</h3>
             <div>
                 <input type="text"/>
-                <button>+</button>
+                <Button name="+"/>
             </div>
             <ul>
-                {tasks.map(t =>{
+                {currentTasks.map(t => {
                     return (
                         <li key={t.id}>
                             <input type="checkbox" checked={t.isDone}/>{t.title}
-                            <button>x</button>
+                            <Button callBack={() => {
+                                deleteTask(t.id)
+                            }} name="-"/>
                         </li>
                     )
                 })}
@@ -34,9 +58,15 @@ export const Todolist = (props:TodolistPropsType) => {
 
             </ul>
             <div>
-                <Button name="All"/>
-                <Button name="Active"/>
-                <Button name="Completed"/>
+                <Button callBack={() => {
+                    onClickFilterHandler('all')
+                }} name="All"/>
+                <Button callBack={() => {
+                    onClickFilterHandler('active')
+                }} name="Active"/>
+                <Button callBack={() => {
+                    onClickFilterHandler('completed')
+                }} name="Completed"/>
             </div>
         </div>
 
