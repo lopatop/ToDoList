@@ -1,6 +1,5 @@
 import {Button} from "./Button.tsx";
 import {useState} from "react";
-
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
 type TaskType = {
