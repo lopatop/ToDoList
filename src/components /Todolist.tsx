@@ -1,5 +1,6 @@
 import {Button} from "./Button.tsx";
 import {useState} from "react";
+
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
 type TaskType = {
@@ -17,22 +18,24 @@ export const Todolist = (props: TodolistPropsType) => {
     const {title, tasks: initialTasks} = props
 
     const [tasks, setTask] = useState(initialTasks)
-    const [filter, setFilter] = useState<onClickFilterHandlerType>('all')
-
     const deleteTask = (id: number) => {
         const updatedTasks = tasks.filter(task => task.id !== id)
         setTask(updatedTasks)
     }
 
-    let currentTasks = tasks
-    if (filter === 'active') currentTasks = tasks.filter(t => !t.isDone)
-    if (filter === 'completed') currentTasks = tasks.filter(t => t.isDone)
-
-    const onClickFilterHandler = (filterType: onClickFilterHandlerType) => {
-        setFilter(filterType)
-
-
+    const [filter, setFilter] = useState<onClickFilterHandlerType>('all')
+    const onClickFilterHandler = (title: onClickFilterHandlerType) => {
+        setFilter(title)
     }
+
+    const currentTasksFoo = () => {
+        let currentTasks = tasks
+        if (filter === 'active') currentTasks = tasks.filter(t => !t.isDone)
+        if (filter === 'completed') currentTasks = tasks.filter(t => t.isDone)
+        return currentTasks
+    }
+
+    let tasksFilter = currentTasksFoo()
 
 
     return (
@@ -42,20 +45,24 @@ export const Todolist = (props: TodolistPropsType) => {
                 <input type="text"/>
                 <Button name="+"/>
             </div>
-            <ul>
-                {currentTasks.map(t => {
-                    return (
-                        <li key={t.id}>
-                            <input type="checkbox" checked={t.isDone}/>{t.title}
-                            <Button callBack={() => {
-                                deleteTask(t.id)
-                            }} name="-"/>
-                        </li>
-                    )
-                })}
+            {tasksFilter.length ? (
+                <ul>
+                    {tasksFilter.map(t => {
+                        return (
+                            <li key={t.id}>
+                                <Button callBack={() => {
+                                    deleteTask(t.id)
+                                }} name="-"/>
+                                <input type="checkbox" checked={t.isDone}/>{t.title}
 
+                            </li>
+                        )
+                    })}
+                </ul>
+            ) : (
+                <span>Тасок нет</span>
+            )}
 
-            </ul>
             <div>
                 <Button callBack={() => {
                     onClickFilterHandler('all')
