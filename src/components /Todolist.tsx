@@ -1,5 +1,4 @@
 import {Button} from "./Button.tsx";
-import {useState} from "react";
 
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
@@ -12,30 +11,14 @@ type TaskType = {
 type TodolistPropsType = {
     title: string
     tasks: TaskType[]
+    deleteTask: (taskId:number) => void
+    onClickFilterHandler:(title:onClickFilterHandlerType)=>void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {title, tasks: initialTasks} = props
+    const {title,onClickFilterHandler,deleteTask,tasks} = props
 
-    const [tasks, setTask] = useState(initialTasks)
-    const deleteTask = (id: number) => {
-        const updatedTasks = tasks.filter(task => task.id !== id)
-        setTask(updatedTasks)
-    }
 
-    const [filter, setFilter] = useState<onClickFilterHandlerType>('all')
-    const onClickFilterHandler = (title: onClickFilterHandlerType) => {
-        setFilter(title)
-    }
-
-    const currentTasksFoo = () => {
-        let currentTasks = tasks
-        if (filter === 'active') currentTasks = tasks.filter(t => !t.isDone)
-        if (filter === 'completed') currentTasks = tasks.filter(t => t.isDone)
-        return currentTasks
-    }
-
-    let tasksFilter = currentTasksFoo()
 
 
     return (
@@ -45,9 +28,9 @@ export const Todolist = (props: TodolistPropsType) => {
                 <input type="text"/>
                 <Button name="+"/>
             </div>
-            {tasksFilter.length ? (
+            {tasks.length ? (
                 <ul>
-                    {tasksFilter.map(t => {
+                    {tasks.map(t => {
                         return (
                             <li key={t.id}>
                                 <Button callBack={() => {
