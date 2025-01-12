@@ -13,6 +13,11 @@ function App() {
         {id: 3, title: "React", isDone: true},
         {id: 4, title: "Redux", isDone: false},
     ])
+
+    const addTasks =(title:string)=>{
+        const newTasks = {id: 4, title: title, isDone: false}
+        setTask=[newTasks, ...tasks]
+    }
     const deleteTask = (taskId: number) => {
         const updatedTasks = tasks.filter(task => task.id !== taskId)
         setTask(updatedTasks)
@@ -38,8 +43,8 @@ function App() {
             <Todolist title="What to learn"
                       tasks={tasksFilter}
                       deleteTask={deleteTask}
-                      onClickFilterHandler={onClickFilterHandler}/>
-
+                      onClickFilterHandler={onClickFilterHandler}
+                      addTasks={addTasks}/>
 
         </div>
     )
