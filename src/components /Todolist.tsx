@@ -1,8 +1,10 @@
 import {Button} from "./Button.tsx";
+import {useState} from "react";
+import {Input} from "./Input.tsx";
 
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
-type TaskType = {
+export type TaskType = {
     id: number
     title: string
     isDone: boolean
@@ -13,20 +15,25 @@ type TodolistPropsType = {
     tasks: TaskType[]
     deleteTask: (taskId:number) => void
     onClickFilterHandler:(title:onClickFilterHandlerType)=>void
+    addTasks:(title:string)=>void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {title,onClickFilterHandler,deleteTask,tasks} = props
+    const {title,onClickFilterHandler,deleteTask,tasks,addTasks} = props
 
+    const[addTitle, setAddTitle] = useState('')
 
-
+    const addTasksFoo =()=>{
+        addTasks(addTitle)
+        setAddTitle('')
+    }
 
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input type="text"/>
-                <Button name="+"/>
+                <Input addTitle ={addTitle} setAddTitle={setAddTitle} />
+                <Button callBack={addTasksFoo} name="+"/>
             </div>
             {tasks.length ? (
                 <ul>
@@ -35,7 +42,7 @@ export const Todolist = (props: TodolistPropsType) => {
                             <li key={t.id}>
                                 <Button callBack={() => {
                                     deleteTask(t.id)
-                                }} name="-"/>
+                                }} name="x"/>
                                 <input type="checkbox" checked={t.isDone}/>{t.title}
 
                             </li>
