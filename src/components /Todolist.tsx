@@ -5,7 +5,7 @@ import {Input} from "./Input.tsx";
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
 export type TaskType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }
@@ -13,9 +13,9 @@ export type TaskType = {
 type TodolistPropsType = {
     title: string
     tasks: TaskType[]
-    deleteTask: (taskId:number) => void
+    deleteTask: (taskId:string) => void
     onClickFilterHandler:(title:onClickFilterHandlerType)=>void
-    addTasks:(title:string)=>void
+    addTasks:(titleTasks:string)=>void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
@@ -32,7 +32,7 @@ export const Todolist = (props: TodolistPropsType) => {
         <div>
             <h3>{title}</h3>
             <div>
-                <Input addTitle ={addTitle} setAddTitle={setAddTitle} />
+                <Input addTitle ={addTitle} setAddTitle={setAddTitle} addTasksFoo={addTasksFoo} />
                 <Button callBack={addTasksFoo} name="+"/>
             </div>
             {tasks.length ? (
