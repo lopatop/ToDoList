@@ -7,7 +7,7 @@ function App() {
 
 
 
-    const [tasks, setTask] = useState([
+    const [tasks, setTasks] = useState([
         {id: 1, title: "CSS", isDone: true},
         {id: 2, title: "JS", isDone: true},
         {id: 3, title: "React", isDone: true},
@@ -15,12 +15,12 @@ function App() {
     ])
 
     const addTasks =(title:string)=>{
-        const newTasks = {id: 4, title: title, isDone: false}
-        setTask=[newTasks, ...tasks]
+        let newTasks = {id: 4, title: title, isDone: false}
+        setTasks([newTasks, ...tasks])
     }
     const deleteTask = (taskId: number) => {
         const updatedTasks = tasks.filter(task => task.id !== taskId)
-        setTask(updatedTasks)
+        setTasks(updatedTasks)
     }
 
     const [filter, setFilter] = useState<onClickFilterHandlerType>('all')
