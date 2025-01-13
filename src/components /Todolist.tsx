@@ -34,8 +34,9 @@ export const Todolist = (props: TodolistPropsType) => {
                 <ul>
                     {tasks.map(t => (
                         <li key={t.id}>
-                            <Button callBack={() => deleteTask(t.id)} name="x"/>
-                            <input type="checkbox" checked={t.isDone} readOnly/> {t.title}
+                            <Button callBack={() => deleteTask(t.id)}  name="x"/>
+                            <input type="checkbox" checked={t.isDone} readOnly/>
+                            {t.title}
                         </li>
                     ))}
                 </ul>
@@ -45,6 +46,8 @@ export const Todolist = (props: TodolistPropsType) => {
         );
     };
 
+    const inputError = (!addTitle.trim() || addTitle.length > 10)
+
     return (
         <div>
             <h3>{title}</h3>
@@ -53,6 +56,7 @@ export const Todolist = (props: TodolistPropsType) => {
                        setAddTitle={setAddTitle}
                        addTasksFoo={addTasksFoo}/>
                 <Button callBack={addTasksFoo}
+                        disabled={inputError}
                         name="+"/>
             </div>
             {renderTasks()}
