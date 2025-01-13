@@ -12,6 +12,7 @@ export const Input = (props: InputPropsType) => {
     const {setAddTitle,addTitle,addTasksFoo} = props
 
 
+
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setAddTitle(e.currentTarget.value)
     }
@@ -22,6 +23,6 @@ export const Input = (props: InputPropsType) => {
     }
 
     return (
-        <input value={addTitle} onKeyPress={onKeyPressInputHandler} onChange={onChangeInputHandler}/>
+        <input value={addTitle} onKeyDown={onKeyPressInputHandler} onChange={onChangeInputHandler}/>
     )
 }
