@@ -1,6 +1,8 @@
 import {Button} from "./Button.tsx";
 import {useState} from "react";
 import {Input} from "./Input.tsx";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
+
 
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
@@ -22,16 +24,18 @@ export const Todolist = (props: TodolistPropsType) => {
     const {title, onClickFilterHandler, deleteTask, tasks, addTasks} = props
 
     const [addTitle, setAddTitle] = useState('')
+    const [parent] = useAutoAnimate<HTMLUListElement>()
 
     const addTasksFoo = () => {
         addTasks(addTitle)
         setAddTitle('')
     }
+    const inputError = (!addTitle.trim() || addTitle.length > 10)
 
     const renderTasks = () => {
         return (
             tasks.length ? (
-                <ul>
+                <ul ref={parent}>
                     {tasks.map(t => (
                         <li key={t.id}>
                             <Button callBack={() => deleteTask(t.id)}  name="x"/>
@@ -46,7 +50,7 @@ export const Todolist = (props: TodolistPropsType) => {
         );
     };
 
-    const inputError = (!addTitle.trim() || addTitle.length > 10)
+
 
     return (
         <div>
