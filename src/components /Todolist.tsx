@@ -18,18 +18,24 @@ type TodolistPropsType = {
     deleteTask: (taskId: string) => void
     onClickFilterHandler: (title: onClickFilterHandlerType) => void
     addTasks: (titleTasks: string) => void
+    changeIsDoneTask:(isDone:boolean, taskId:string) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {title, onClickFilterHandler, deleteTask, tasks, addTasks} = props
+    const {title, onClickFilterHandler, deleteTask, tasks, addTasks,changeIsDoneTask} = props
 
     const [addTitle, setAddTitle] = useState('')
     const [parent] = useAutoAnimate<HTMLUListElement>()
 
     const addTasksFoo = () => {
-        addTasks(addTitle)
+        addTasks(addTitle.trim())
         setAddTitle('')
     }
+
+    const onChangeInputCheckboxHandler = (isDone: boolean, taskId:string) => {
+        changeIsDoneTask(isDone, taskId)
+    }
+
     const inputError = (!addTitle.trim() || addTitle.length > 10)
 
     const renderTasks = () => {
@@ -39,7 +45,7 @@ export const Todolist = (props: TodolistPropsType) => {
                     {tasks.map(t => (
                         <li key={t.id}>
                             <Button callBack={() => deleteTask(t.id)}  name="x"/>
-                            <input type="checkbox" checked={t.isDone} readOnly/>
+                            <input type="checkbox" checked={t.isDone} onChange={(e)=>onChangeInputCheckboxHandler(e.currentTarget.checked, t.id)} />
                             {t.title}
                         </li>
                     ))}
