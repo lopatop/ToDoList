@@ -19,16 +19,22 @@ type TodolistPropsType = {
     onClickFilterHandler: (title: onClickFilterHandlerType) => void
     addTasks: (titleTasks: string) => void
     changeIsDoneTask:(isDone:boolean, taskId:string) => void
+
 }
 
 export const Todolist = (props: TodolistPropsType) => {
     const {title, onClickFilterHandler, deleteTask, tasks, addTasks,changeIsDoneTask} = props
 
     const [addTitle, setAddTitle] = useState('')
+    const [error, setError] = useState<string | null>(null)
     const [parent] = useAutoAnimate<HTMLUListElement>()
 
+    const inputError = (!addTitle.trim() || addTitle.length > 10)
+
     const addTasksFoo = () => {
-        addTasks(addTitle.trim())
+        if (!inputError){
+            addTasks(addTitle.trim())
+        }else{setError('Enter a note, max 10 characters!') }
         setAddTitle('')
     }
 
@@ -36,7 +42,7 @@ export const Todolist = (props: TodolistPropsType) => {
         changeIsDoneTask(isDone, taskId)
     }
 
-    const inputError = (!addTitle.trim() || addTitle.length > 10)
+
 
     const renderTasks = () => {
         return (
@@ -64,11 +70,15 @@ export const Todolist = (props: TodolistPropsType) => {
             <div>
                 <Input addTitle={addTitle}
                        setAddTitle={setAddTitle}
-                       addTasksFoo={addTasksFoo}/>
+                       addTasksFoo={addTasksFoo}
+                       className={error? 'errorInput': ''}
+                       setError={setError}/>
                 <Button callBack={addTasksFoo}
                         disabled={inputError}
                         name="+"/>
+
             </div>
+            {error && <span className='errorMessage'>{error}</span>}
             {renderTasks()}
             <div>
                 <Button callBack={() => {
