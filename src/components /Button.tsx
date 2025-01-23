@@ -4,11 +4,12 @@ export type ButtonPropsType = {
     name:string
     callBack?:()=>void
     disabled?:boolean
+    className?: string
 }
 
 
 export const  Button = (props:ButtonPropsType) =>{
-    const{name,callBack,disabled}=props
+    const{name,callBack,disabled,className}=props
 
     const onClickHandler = ()=>{
         if(callBack){
@@ -16,7 +17,7 @@ export const  Button = (props:ButtonPropsType) =>{
         }
     }
     return (
-            <button onClick={onClickHandler} disabled={disabled}>{name}</button>
+            <button className={className} onClick={onClickHandler} disabled={disabled}>{name}</button>
     )
 
 }
