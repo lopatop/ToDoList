@@ -19,11 +19,12 @@ type TodolistPropsType = {
     onClickFilterHandler: (title: onClickFilterHandlerType) => void
     addTasks: (titleTasks: string) => void
     changeIsDoneTask:(isDone:boolean, taskId:string) => void
+    filter: onClickFilterHandlerType
 
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {title, onClickFilterHandler, deleteTask, tasks, addTasks,changeIsDoneTask} = props
+    const {title, onClickFilterHandler, deleteTask, tasks, addTasks,changeIsDoneTask,filter} = props
 
     const [addTitle, setAddTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
@@ -81,15 +82,17 @@ export const Todolist = (props: TodolistPropsType) => {
             {error && <span className='errorMessage'>{error}</span>}
             {renderTasks()}
             <div>
-                <Button callBack={() => {
-                    onClickFilterHandler('all')
-                }} name="All"/>
-                <Button callBack={() => {
-                    onClickFilterHandler('active')
-                }} name="Active"/>
-                <Button callBack={() => {
-                    onClickFilterHandler('completed')
-                }} name="Completed"/>
+                <Button className={filter === 'all'? 'filterOnClick': ''}
+                        callBack={() => {onClickFilterHandler('all')}}
+                        name="All"/>
+                <Button
+                    className={filter === 'active'? 'filterOnClick': ''}
+                    callBack={() => {onClickFilterHandler('active')}}
+                    name="Active"/>
+                <Button
+                    className={filter === 'completed'? 'filterOnClick': ''}
+                    callBack={() => {onClickFilterHandler('completed')}}
+                    name="Completed"/>
             </div>
         </div>
 
