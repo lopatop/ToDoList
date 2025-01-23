@@ -5,7 +5,6 @@ import {v1} from "uuid";
 
 function App() {
 
-
     const [tasks, setTasks] = useState([
         {id: v1(), title: "CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
@@ -50,7 +49,8 @@ function App() {
                       deleteTask={deleteTask}
                       onClickFilterHandler={onClickFilterHandler}
                       addTasks={addTasks}
-                      changeIsDoneTask={changeIsDoneTask}/>
+                      changeIsDoneTask={changeIsDoneTask}
+                      filter={filter}/>
         </div>
     )
 }
