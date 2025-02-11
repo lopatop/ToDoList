@@ -3,6 +3,12 @@ import {onClickFilterHandlerType, Todolist} from "./components /Todolist.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
 
+type TodolistPropsType = {
+    id: string,
+    title: string
+    filter: onClickFilterHandlerType
+}
+
 function App() {
 
     const [tasks, setTasks] = useState([
@@ -12,6 +18,28 @@ function App() {
         {id: v1(), title: "Redux", isDone: false},
     ])
 
+    const todolistId1 = v1();
+    const todolistId2 = v1();
+
+    const [todolist, setTodolist] = useState<TodolistPropsType[]>([
+        {id: todolistId1, title: 'What to learn-1', filter: 'all'},
+        {id: todolistId2, title: 'What to learn-2', filter: 'all'}
+    ]);
+
+    const [tasks, setTasks] = useState({
+        [todolistId1]: [
+            {id: v1(), title: "CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "React", isDone: true},
+            {id: v1(), title: "Redux", isDone: false},
+        ],
+        [todolistId2]: [
+            {id: v1(), title: "CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "React", isDone: true},
+            {id: v1(), title: "Redux", isDone: false},
+        ]
+    })
 
     const [filter, setFilter] = useState<onClickFilterHandlerType>('all')
     const onClickFilterHandler = (title: onClickFilterHandlerType) => {
