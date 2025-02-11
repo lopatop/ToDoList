@@ -11,13 +11,6 @@ type TodolistPropsType = {
 
 function App() {
 
-    const [tasks, setTasks] = useState([
-        {id: v1(), title: "CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "React", isDone: true},
-        {id: v1(), title: "Redux", isDone: false},
-    ])
-
     const todolistId1 = v1();
     const todolistId2 = v1();
 
@@ -53,11 +46,10 @@ function App() {
         return currentTasks
     }
 
-    let tasksFilter = currentTasksFoo()
-
-    const addTasks = (titleTasks: string) => {
+    const addTasks = (todolistId: string, titleTasks: string) => {
         let newTasks = {id: v1(), title: titleTasks, isDone: false}
-        setTasks([newTasks, ...tasks])
+        const newState = {...tasks, [todolistId]: [newTasks, ...tasks[todolistId]]}
+        setTasks(newState)
     }
     const deleteTask = (taskId: string) => {
         const updatedTasks = tasks.filter(task => task.id !== taskId)
