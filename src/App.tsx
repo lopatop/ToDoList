@@ -70,13 +70,34 @@ function App() {
 
     return (
         <div className="app">
-            <Todolist title="What to learn"
-                      tasks={tasksFilter}
-                      deleteTask={deleteTask}
-                      onClickFilterHandler={onClickFilterHandler}
-                      addTasks={addTasks}
-                      changeIsDoneTask={changeIsDoneTask}
-                      filter={filter}/>
+
+
+            {todolist.map(el => {
+                const currentTasksFoo = () => {
+                    let currentTasks = tasks[el.id];
+                    if (el.filter === 'active') currentTasks = currentTasks.filter(t => !t.isDone)
+                    if (el.filter === 'completed') currentTasks = currentTasks.filter(t => t.isDone)
+                    return currentTasks
+                }
+                let tasksFilter = currentTasksFoo()
+
+                return (
+                    <Todolist
+                        todolistId={el.id}
+                        key={el.id}
+                        title={el.title}
+                        filter={el.filter}
+                        tasks={tasksFilter}
+                        deleteTask={deleteTask}
+                        filteredTasks={filteredTasks}
+                        addTasks={addTasks}
+                        changeIsDoneTask={changeIsDoneTask}
+                    />
+
+                )
+            })}
+
+
         </div>
     )
 }
