@@ -51,9 +51,15 @@ function App() {
         const newState = {...tasks, [todolistId]: [newTasks, ...tasks[todolistId]]}
         setTasks(newState)
     }
-    const deleteTask = (taskId: string) => {
-        const updatedTasks = tasks.filter(task => task.id !== taskId)
-        setTasks(updatedTasks)
+    const filteredTasks = (todolistId: string, filter: onClickFilterHandlerType) => {
+        const newState = todolist.map(tl => tl.id === todolistId ? {...tl, filter} : tl)
+        setTodolist(newState)
+
+    }
+
+    const deleteTask = (todolistId: string, taskId: string) => {
+        // const updatedTasks = tasks.filter(task => task.id !== taskId)
+        // setTasks(updatedTasks)
     }
 
     const changeIsDoneTask = (isDone:boolean, taskId:string)=>{
