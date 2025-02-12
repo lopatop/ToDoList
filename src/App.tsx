@@ -58,8 +58,8 @@ function App() {
     }
 
     const deleteTask = (todolistId: string, taskId: string) => {
-        // const updatedTasks = tasks.filter(task => task.id !== taskId)
-        // setTasks(updatedTasks)
+        const newState = {...tasks,[todolistId]: tasks[todolistId].filter(t=>t.id !== taskId)}
+            setTasks(newState)
     }
 
     const changeIsDoneTask = (isDone:boolean, taskId:string)=>{
