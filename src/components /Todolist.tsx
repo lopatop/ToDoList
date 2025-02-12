@@ -56,10 +56,12 @@ export const Todolist = (props: TodolistPropsType) => {
             tasks.length ? (
                 <ul ref={parent}>
                     {tasks.map(t => (
-                        <li key={t.id}>
-                            <Button callBack={() => deleteTask(t.id)}  name="x"/>
-                            <input type="checkbox" checked={t.isDone} onChange={(e)=>onChangeInputCheckboxHandler(e.currentTarget.checked, t.id)} />
-                            {t.title}
+                        <li key={t.id} >
+                            <Button callBack={() => onClickDeleteTaskHandler(t.id)} name="x"/>
+                                <input type="checkbox" checked={t.isDone}
+                                       onChange={(e) => onChangeInputCheckboxHandler(e.currentTarget.checked, t.id)}/>
+                                <EditableSpan className={t.isDone? 'isDone': ''}  title={t.title}
+                                              changeTitleItem={(newTitleTask) => removeTitleTaskHandler(newTitleTask, t.id)}/>
                         </li>
                     ))}
                 </ul>
@@ -73,19 +75,11 @@ export const Todolist = (props: TodolistPropsType) => {
 
     return (
         <div>
-            <h3>{title}</h3>
-            <div>
-                <Input addTitle={addTitle}
-                       setAddTitle={setAddTitle}
-                       addTasksFoo={addTasksFoo}
-                       className={error? 'errorInput': ''}
-                       setError={setError}/>
-                <Button callBack={addTasksFoo}
-                        disabled={inputError}
-                        name="+"/>
-
+            <div className='container'>
+                <Button name='x' callBack={onClickDeleteTodolistHandler}/>
+                <EditableSpan title={title} changeTitleItem={(newTitleTask)=>removeTitleTodolistHandler(newTitleTask)}/>
             </div>
-            {error && <span className='errorMessage'>{error}</span>}
+            <CreateItemForm addItem={(title)=>addTaskHandler(title)}/>
             {renderTasks()}
             <div>
                 <Button className={filter === 'all'? 'filterOnClick': ''}
