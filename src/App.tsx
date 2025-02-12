@@ -62,9 +62,9 @@ function App() {
             setTasks(newState)
     }
 
-    const changeIsDoneTask = (isDone:boolean, taskId:string)=>{
-    const changeIsDone = tasks.map(t => t.id === taskId? {...t, isDone:isDone}:t)
-        setTasks(changeIsDone)
+    const changeIsDoneTask = (todolistId: string, isDone: boolean, taskId: string) => {
+        const newState = {...tasks, [todolistId]: tasks[todolistId].map(t=>t.id === taskId? {...t, isDone}:t)}
+            setTasks(newState)
     }
 
 
