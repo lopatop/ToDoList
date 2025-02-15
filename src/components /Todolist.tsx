@@ -56,6 +56,9 @@ export const Todolist = (props: TodolistPropsType) => {
     }
 
 
+    const removeTitleTaskHandler =(newTitle: string, taskId: string )=>{
+        removeTitleTask(todolistId, newTitle, taskId)
+    }
 
     const renderTasks = () => {
         return (
