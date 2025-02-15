@@ -1,7 +1,7 @@
 import {Button} from "./Button.tsx";
-import {useState} from "react";
-import {Input} from "./Input.tsx";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
+import {CreateItemForm} from "./CreateItemForm.tsx";
+import {EditableSpan} from "./EditableSpan.tsx";
 
 
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
@@ -13,31 +13,38 @@ export type TaskType = {
 }
 
 type TodolistPropsType = {
+    todolistId: string
     title: string
     tasks: TaskType[]
-    deleteTask: (taskId: string) => void
-    onClickFilterHandler: (title: onClickFilterHandlerType) => void
-    addTasks: (titleTasks: string) => void
-    changeIsDoneTask:(isDone:boolean, taskId:string) => void
+    deleteTask: (todolistId: string, taskId: string) => void
+    filteredTasks: (todolistId: string, title: onClickFilterHandlerType) => void
+    addTasks: (todolistId: string, titleTasks: string) => void
+    changeIsDoneTask: (todolistId: string, isDone: boolean, taskId: string) => void
     filter: onClickFilterHandlerType
+    deleteTodolist: (todolistId: string) => void
+    removeTitleTask:(todolistId: string,newTitle: string, taskId: string) => void
+    removeTitleTodolist:(todolistId: string, newTitle: string) => void
 
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const {title, onClickFilterHandler, deleteTask, tasks, addTasks,changeIsDoneTask,filter} = props
+    const {
+        todolistId,
+        title,
+        filteredTasks,
+        deleteTask,
+        tasks,
+        addTasks,
+        changeIsDoneTask,
+        filter,
+        deleteTodolist,
+        removeTitleTask,
+        removeTitleTodolist,
+    } = props
 
-    const [addTitle, setAddTitle] = useState('')
-    const [error, setError] = useState<string | null>(null)
+
     const [parent] = useAutoAnimate<HTMLUListElement>()
 
-    const inputError = (!addTitle.trim() || addTitle.length > 10)
-
-    const addTasksFoo = () => {
-        if (!inputError){
-            addTasks(addTitle.trim())
-        }else{setError('Enter a note, max 10 characters!') }
-        setAddTitle('')
-    }
 
     const onChangeInputCheckboxHandler = (isDone: boolean, taskId: string) => {
         changeIsDoneTask(todolistId, isDone, taskId)
@@ -45,8 +52,8 @@ export const Todolist = (props: TodolistPropsType) => {
     const onClickDeleteTaskHandler = (taskId: string) => {
         deleteTask(todolistId, taskId)
     }
-    const onClickFilteredTasksHandler =(title:onClickFilterHandlerType )=>{
-        filteredTasks(todolistId,title)
+    const onClickFilteredTasksHandler = (title: onClickFilterHandlerType) => {
+        filteredTasks(todolistId, title)
     }
     const onClickDeleteTodolistHandler = () => {
         deleteTodolist(todolistId)
@@ -83,7 +90,6 @@ export const Todolist = (props: TodolistPropsType) => {
     };
 
 
-
     return (
         <div>
             <div className='container'>
@@ -93,16 +99,22 @@ export const Todolist = (props: TodolistPropsType) => {
             <CreateItemForm addItem={(title)=>addTaskHandler(title)}/>
             {renderTasks()}
             <div>
-                <Button className={filter === 'all'? 'filterOnClick': ''}
-                        callBack={() => {onClickFilterHandler('all')}}
+                <Button className={filter === 'all' ? 'filterOnClick' : ''}
+                        callBack={() => {
+                            onClickFilteredTasksHandler('all')
+                        }}
                         name="All"/>
                 <Button
-                    className={filter === 'active'? 'filterOnClick': ''}
-                    callBack={() => {onClickFilterHandler('active')}}
+                    className={filter === 'active' ? 'filterOnClick' : ''}
+                    callBack={() => {
+                        onClickFilteredTasksHandler('active')
+                    }}
                     name="Active"/>
                 <Button
-                    className={filter === 'completed'? 'filterOnClick': ''}
-                    callBack={() => {onClickFilterHandler('completed')}}
+                    className={filter === 'completed' ? 'filterOnClick' : ''}
+                    callBack={() => {
+                        onClickFilteredTasksHandler('completed')
+                    }}
                     name="Completed"/>
             </div>
         </div>
