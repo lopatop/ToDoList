@@ -55,9 +55,11 @@ export const Todolist = (props: TodolistPropsType) => {
         addTasks(todolistId, titleTasks)
     }
 
-
     const removeTitleTaskHandler =(newTitle: string, taskId: string )=>{
         removeTitleTask(todolistId, newTitle, taskId)
+    }
+    const removeTitleTodolistHandler=(newTitle:string)=>{
+        removeTitleTodolist(todolistId,newTitle )
     }
 
     const renderTasks = () => {

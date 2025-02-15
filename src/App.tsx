@@ -71,6 +71,12 @@ function App() {
         delete tasks[todolistId]
         setTodolist(newState)
     }
+    const addTodolist = (titleTodolist: string) => {
+        const todolistId = v1();
+        const newTodolist:TodolistPropsType = {id: todolistId, title: titleTodolist, filter: 'all'}
+        setTodolist([newTodolist,...todolist])
+        setTasks({...tasks, [todolistId]: []})
+    }
     const removeTitleTask=(todolistId: string,newTitle: string, taskId: string)=>{
         const newState ={...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId?{...t,title:newTitle}:t)}
         setTasks(newState)
