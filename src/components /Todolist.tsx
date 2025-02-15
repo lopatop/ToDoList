@@ -48,6 +48,12 @@ export const Todolist = (props: TodolistPropsType) => {
     const onClickFilteredTasksHandler =(title:onClickFilterHandlerType )=>{
         filteredTasks(todolistId,title)
     }
+    const onClickDeleteTodolistHandler = () => {
+        deleteTodolist(todolistId)
+    }
+    const addTaskHandler = (titleTasks:string)=>{
+        addTasks(todolistId, titleTasks)
+    }
 
 
 
