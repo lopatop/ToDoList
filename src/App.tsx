@@ -80,6 +80,10 @@ function App() {
     const removeTitleTask=(todolistId: string,newTitle: string, taskId: string)=>{
         const newState ={...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId?{...t,title:newTitle}:t)}
         setTasks(newState)
+    const removeTitleTodolist =(todolistId: string, newTitle: string)=>{
+        const newState = todolist.map(t => t.id === todolistId?{...t,title:newTitle}:t)
+        setTodolist(newState)
+    }
 
 
     return (
