@@ -39,11 +39,11 @@ export const Todolist = (props: TodolistPropsType) => {
         setAddTitle('')
     }
 
-    const onChangeInputCheckboxHandler = (isDone: boolean, taskId:string) => {
-        changeIsDoneTask(isDone, taskId)
+    const onChangeInputCheckboxHandler = (isDone: boolean, taskId: string) => {
+        changeIsDoneTask(todolistId, isDone, taskId)
     }
-    const onClickDeleteTaskHandler =(taskId:string) =>{
-        deleteTask(todolistId,taskId)
+    const onClickDeleteTaskHandler = (taskId: string) => {
+        deleteTask(todolistId, taskId)
     }
     const onClickFilteredTasksHandler =(title:onClickFilterHandlerType )=>{
         filteredTasks(todolistId,title)
