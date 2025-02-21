@@ -1,8 +1,15 @@
-import {Button} from "./Button.tsx";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {CreateItemForm} from "./CreateItemForm.tsx";
 import {EditableSpan} from "./EditableSpan.tsx";
-
+import IconButton from '@mui/material/IconButton';
+import Delete from '@mui/icons-material/Delete';
+import Clear from '@mui/icons-material/Clear';
+import Button from "@mui/material/Button";
+import Checkbox from '@mui/material/Checkbox';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Box from '@mui/material/Box';
+import {filterButtonContainerStyle, listItemStyle} from "../todolist.styles.ts";
 
 export type onClickFilterHandlerType = 'all' | 'active' | 'completed'
 
@@ -22,8 +29,8 @@ type TodolistPropsType = {
     changeIsDoneTask: (todolistId: string, isDone: boolean, taskId: string) => void
     filter: onClickFilterHandlerType
     deleteTodolist: (todolistId: string) => void
-    removeTitleTask:(todolistId: string,newTitle: string, taskId: string) => void
-    removeTitleTodolist:(todolistId: string, newTitle: string) => void
+    removeTitleTask: (todolistId: string, newTitle: string, taskId: string) => void
+    removeTitleTodolist: (todolistId: string, newTitle: string) => void
 
 }
 
@@ -45,6 +52,14 @@ export const Todolist = (props: TodolistPropsType) => {
 
     const [parent] = useAutoAnimate<HTMLUListElement>()
 
+    const currentTasksFoo = () => {
+        let currentTasks = tasks;
+        if (filter === 'active') currentTasks = currentTasks.filter(t => !t.isDone)
+        if (filter === 'completed') currentTasks = currentTasks.filter(t => t.isDone)
+        return currentTasks
+    }
+    let tasksFilter = currentTasksFoo()
+
 
     const onChangeInputCheckboxHandler = (isDone: boolean, taskId: string) => {
         changeIsDoneTask(todolistId, isDone, taskId)
@@ -58,31 +73,43 @@ export const Todolist = (props: TodolistPropsType) => {
     const onClickDeleteTodolistHandler = () => {
         deleteTodolist(todolistId)
     }
-    const addTaskHandler = (titleTasks:string)=>{
+    const addTaskHandler = (titleTasks: string) => {
         addTasks(todolistId, titleTasks)
     }
 
-    const removeTitleTaskHandler =(newTitle: string, taskId: string )=>{
+    const removeTitleTaskHandler = (newTitle: string, taskId: string) => {
         removeTitleTask(todolistId, newTitle, taskId)
     }
-    const removeTitleTodolistHandler=(newTitle:string)=>{
-        removeTitleTodolist(todolistId,newTitle )
+    const removeTitleTodolistHandler = (newTitle: string) => {
+        removeTitleTodolist(todolistId, newTitle)
     }
+
+
 
     const renderTasks = () => {
         return (
-            tasks.length ? (
-                <ul ref={parent}>
-                    {tasks.map(t => (
-                        <li key={t.id} >
-                            <Button callBack={() => onClickDeleteTaskHandler(t.id)} name="x"/>
-                                <input type="checkbox" checked={t.isDone}
-                                       onChange={(e) => onChangeInputCheckboxHandler(e.currentTarget.checked, t.id)}/>
-                                <EditableSpan className={t.isDone? 'isDone': ''}  title={t.title}
+            tasksFilter.length ? (
+                <List ref={parent}>
+                    {tasksFilter.map(t => (
+                        <ListItem
+                            key={t.id}
+                            sx={listItemStyle}
+                        >
+                            <Box>
+                                <Checkbox size={'small'}
+                                          checked={t.isDone}
+                                          onChange={(e) => onChangeInputCheckboxHandler(e.currentTarget.checked, t.id)}/>
+
+                                <EditableSpan isDone={t.isDone}
+                                              title={t.title}
                                               changeTitleItem={(newTitleTask) => removeTitleTaskHandler(newTitleTask, t.id)}/>
-                        </li>
+                            </Box>
+                            <IconButton aria-label="delete" onClick={() => onClickDeleteTaskHandler(t.id)}>
+                                <Clear/>
+                            </IconButton>
+                        </ListItem>
                     ))}
-                </ul>
+                </List>
             ) : (
                 <span>Тасок нет</span>
             )
@@ -91,32 +118,46 @@ export const Todolist = (props: TodolistPropsType) => {
 
 
     return (
-        <div>
-            <div className='container'>
-                <Button name='x' callBack={onClickDeleteTodolistHandler}/>
-                <EditableSpan title={title} changeTitleItem={(newTitleTask)=>removeTitleTodolistHandler(newTitleTask)}/>
-            </div>
-            <CreateItemForm addItem={(title)=>addTaskHandler(title)}/>
-            {renderTasks()}
-            <div>
-                <Button className={filter === 'all' ? 'filterOnClick' : ''}
-                        callBack={() => {
+        <div className='container'>
+            <h3>
+                <EditableSpan title={title}
+                              changeTitleItem={(newTitleTask) => removeTitleTodolistHandler(newTitleTask)}/>
+                <IconButton aria-label="delete"
+                            onClick={onClickDeleteTodolistHandler}>
+                    <Delete/>
+                </IconButton>
+            </h3>
+            <Box>
+
+                <CreateItemForm addItem={(title) => addTaskHandler(title)}/>
+                {renderTasks()}
+                <Box sx={filterButtonContainerStyle}>
+                    <Button
+                        variant={'contained'}
+                        size={'small'}
+                        color={filter === 'all' ? 'secondary' : 'primary'}
+                        onClick={() => {
                             onClickFilteredTasksHandler('all')
                         }}
-                        name="All"/>
-                <Button
-                    className={filter === 'active' ? 'filterOnClick' : ''}
-                    callBack={() => {
-                        onClickFilteredTasksHandler('active')
-                    }}
-                    name="Active"/>
-                <Button
-                    className={filter === 'completed' ? 'filterOnClick' : ''}
-                    callBack={() => {
-                        onClickFilteredTasksHandler('completed')
-                    }}
-                    name="Completed"/>
-            </div>
+                    >All</Button>
+                    <Button
+                        variant={'contained'}
+                        size={'small'}
+                        color={filter === 'active' ? 'secondary' : 'primary'}
+                        onClick={() => {
+                            onClickFilteredTasksHandler('active')
+                        }}
+                    >Active</Button>
+                    <Button
+                        variant={'contained'}
+                        size={'small'}
+                        color={filter === 'completed' ? 'secondary' : 'primary'}
+                        onClick={() => {
+                            onClickFilteredTasksHandler('completed')
+                        }}
+                    >Completed</Button>
+                </Box>
+            </Box>
         </div>
 
 
