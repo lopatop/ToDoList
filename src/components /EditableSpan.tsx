@@ -4,11 +4,11 @@ import {ChangeEvent, KeyboardEvent, useState} from "react";
 type EditableSpanPropsType = {
     title: string
     changeTitleItem:(newTitleTask:string) => void
-    className?: string
+    isDone?: boolean
 }
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
-    const {title,changeTitleItem,className} = props
+    const {title,changeTitleItem,isDone} = props
 
     const [isEditMode, setIsEditMode] = useState<boolean>(false)
     const [newTitle, setNewTitle] = useState(title)
@@ -45,7 +45,7 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
                      autoFocus
                      onKeyDown={onKeyDownHandler}
                      onChange={onChangeInputHandler} />
-            : <span className={className} onDoubleClick={editeModeOpen}>{title}</span>
+            : <span style={{opacity: isDone ? 0.5 : 1,textDecoration: isDone ? 'line-through' : 'none'  }} onDoubleClick={editeModeOpen}>{title}</span>
 
     )
 }
