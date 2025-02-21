@@ -80,6 +80,22 @@ function App() {
     }
 
 
+
+    const [themeMode, setThemeMode] = useState<ThemeModePropsType>('light')
+    const theme = createTheme({
+            palette: {
+                mode: themeMode == "light"?"light":"dark",
+                primary: teal,
+                secondary: {
+                    main: "#035363"
+                },
+            },
+        }
+    )
+    const changeModeHandler =()=>{
+        setThemeMode(themeMode == "light" ? "dark" : "light")
+    }
+
     return (
         <div className="app">
 
