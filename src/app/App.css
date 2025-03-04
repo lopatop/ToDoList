@@ -1,0 +1,33 @@
+/*.app {*/
+/*    !*padding: 30px;*!*/
+/*    !*display: flex;*!*/
+/*}*/
+
+/*.app > div {*/
+/*    margin-right: 50px;*/
+/*}*/
+
+/*.errorInput {*/
+/*    border: 2px solid #a84343;*/
+/*}*/
+
+/*.errorMessage {*/
+/*    color: #a84343;*/
+/*}*/
+
+/*.filterOnClick {*/
+/*    background-color: #2589fa;*/
+/*    border: 2px solid #2589fa;*/
+/*    color: white;*/
+/*}*/
+
+/*.container {*/
+/*    display: flex;*/
+/*    gap: 8px;*/
+/*    align-items: center;*/
+
+/*}*/
+/*.isDone{*/
+/*    text-decoration: line-through;*/
+/*    opacity: 0.5;*/
+/*}*/
