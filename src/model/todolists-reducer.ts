@@ -1,30 +1,13 @@
-
-import {TodolistPropsType} from "../app/App.tsx";
 import {onClickFilterHandlerType} from "../components /Todolist.tsx";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
 
+export type TodolistPropsType = {
+    id: string
+    title: string
+    filter: onClickFilterHandlerType
+}
 
-
-// type DeleteTodolistActionType = {
-//     type: 'REMOVE-TODOLIST'
-//     payload: {
-//         todolistId: string
-//     }
-// }
-//
-// type CreateTodolistActionType = {
-//     type: 'CREATE-TITLE-TODOLIST'
-//     payload: {
-//         todolistId: string
-//         title: string
-//
-//     }
-// }
-
-
-// type actionType =
-//     DeleteTodolistActionType
-//     | CreateTodolistActionType
+const initialState: TodolistPropsType[] = [];
 
 export const deleteTodolistAC = createAction<{todolistId:string}>('todolists/deleteTodolist')
 
@@ -35,8 +18,6 @@ export const createTodolistAC = createAction('todolists/createTodolist',(title:s
 })
 
 export const changeTodolistTitleAC = createAction<{todolistId: string, newTitle: string}>('todolists/changeTodolistTitle')
-
-const initialState: TodolistPropsType[] = [];
 
 
 export const todolistsReducer = createReducer(initialState, builder => {
