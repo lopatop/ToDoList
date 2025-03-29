@@ -5,17 +5,24 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {MenuButton} from "./MenuButton.tsx";
-import {Switch, useTheme} from "@mui/material";
+import {MenuButton} from "@/components /MenuButton.tsx";
+import {Switch} from "@mui/material";
+import {changeThemeModeAC} from "@/app/app-reducer.ts";
+import {getTheme} from "@/common/theme/theme.ts";
+import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
+import {selectThemeMode} from "@/app/app-selectors.ts";
+import {useAppSelector} from "@/common/hooks/useAppSelector.ts";
 
 
-type ButtonAppBarPropsType = {
-    onChange:()=>void
-}
+export  function Header() {
 
-export  function ButtonAppBar(props:ButtonAppBarPropsType) {
-    const{onChange}=props
-    const theme = useTheme()
+    const themeMode = useAppSelector(selectThemeMode)
+    const dispatch = useAppDispatch()
+    const theme = getTheme(themeMode)
+    const changeModeHandler = () => {
+        dispatch(changeThemeModeAC(themeMode === 'light' ? 'dark' : 'light'))
+    }
+
     return (
         <Box sx={{ flexGrow: 1, pb:'30px' }}>
             <AppBar position="static">
@@ -37,7 +44,7 @@ export  function ButtonAppBar(props:ButtonAppBarPropsType) {
                     <MenuButton background={theme.palette.primary.dark}>FAQ</MenuButton>
                     <Switch
                         color={'default'}
-                        onChange={onChange}
+                        onChange={changeModeHandler}
                     />
                 </Toolbar>
             </AppBar>
