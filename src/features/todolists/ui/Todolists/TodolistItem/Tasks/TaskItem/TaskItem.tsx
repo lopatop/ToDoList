@@ -1,16 +1,17 @@
 import ListItem from "@mui/material/ListItem"
 import Box from "@mui/material/Box"
 import Checkbox from "@mui/material/Checkbox"
-import { changeIsDoneTaskAC, removeTaskAC, removeTitleTaskAC } from "@/features/todolists/model/tasks-reducer.ts"
+import { changeTaskStatusTC, changeTaskTitleTC, deleteTasksTC } from "@/features/todolists/model/tasks-slice.ts"
 import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan.tsx"
 import IconButton from "@mui/material/IconButton"
 import Clear from "@mui/icons-material/Clear"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { TaskType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem.tsx"
 import { listItemStyle } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts"
+import { TaskStatus } from "@/common/enums/enums.ts"
+import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
 
 type TaskProps = {
-  t: TaskType
+  t: DomainTask
   todolistId: string
 }
 
@@ -22,32 +23,32 @@ export const TaskItem = ({ t, todolistId }: TaskProps) => {
       <Box>
         <Checkbox
           size={"small"}
-          checked={t.isDone}
+          checked={t.status === TaskStatus.Completed}
           onChange={(e) =>
             dispatch(
-              changeIsDoneTaskAC({
+              changeTaskStatusTC({
                 todolistId,
-                isDone: e.currentTarget.checked,
-                taskId: t.id,
+                status: e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New,
+                task: t,
               }),
             )
           }
         />
         <EditableSpan
-          isDone={t.isDone}
+          isDone={t.status === TaskStatus.Completed}
           title={t.title}
           changeTitleItem={(newTitleTask) =>
             dispatch(
-              removeTitleTaskAC({
+              changeTaskTitleTC({
                 todolistId,
-                newTitle: newTitleTask,
+                title: newTitleTask,
                 taskId: t.id,
               }),
             )
           }
         />
       </Box>
-      <IconButton aria-label="delete" onClick={() => dispatch(removeTaskAC({ todolistId, taskId: t.id }))}>
+      <IconButton aria-label="delete" onClick={() => dispatch(deleteTasksTC({ todolistId, taskId: t.id }))}>
         <Clear />
       </IconButton>
     </ListItem>
