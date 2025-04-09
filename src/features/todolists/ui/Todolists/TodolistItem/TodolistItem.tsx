@@ -1,17 +1,12 @@
-import { CreateItemForm } from "../../../../../common/components/CreateItemForm/CreateItemForm.tsx"
-import { addTaskAC } from "@/features/todolists/model/tasks-reducer.ts"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { TodolistTitle } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx"
-import { Tasks } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks.tsx"
-import { FilterButtons } from "@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons.tsx"
+import { CreateItemForm } from "@/common/components"
+
+import { useAppDispatch } from "@/common/hooks/useAppDispatch"
+import { TodolistTitle } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle"
+import { Tasks } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks"
+import { FilterButtons } from "@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons"
+import { createTaskTC } from "@/features/todolists/model/tasks-slice"
 
 export type onClickFilterHandlerType = "all" | "active" | "completed"
-
-export type TaskType = {
-  id: string
-  title: string
-  isDone: boolean
-}
 
 type TodolistPropsType = {
   todolistId: string
@@ -24,7 +19,7 @@ export const TodolistItem = (props: TodolistPropsType) => {
   const dispatch = useAppDispatch()
 
   const addTaskHandler = (titleTasks: string) => {
-    dispatch(addTaskAC({ todolistId, titleTasks }))
+    dispatch(createTaskTC({ todolistId, title: titleTasks }))
   }
 
   return (
