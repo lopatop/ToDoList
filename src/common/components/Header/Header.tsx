@@ -4,12 +4,12 @@ import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
 import IconButton from "@mui/material/IconButton"
 import MenuIcon from "@mui/icons-material/Menu"
-import { MenuButton } from "@/common/components/MenuButton/MenuButton.tsx"
+import { MenuButton } from "@/common/components/MenuButton/MenuButton"
 import { LinearProgress, Switch } from "@mui/material"
-import { changeThemeModeAC, selectStatus, selectThemeMode } from "@/app/app-slice.ts"
-import { getTheme } from "@/common/theme/theme.ts"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
+import { changeThemeModeAC, selectStatus, selectThemeMode } from "@/app/app-slice"
+import { getTheme } from "@/common/theme/theme"
+import { useAppDispatch } from "@/common/hooks/useAppDispatch"
+import { useAppSelector } from "@/common/hooks/useAppSelector"
 
 export function Header() {
   const themeMode = useAppSelector(selectThemeMode)

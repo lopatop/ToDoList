@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid"
-import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemForm.tsx"
+import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemForm"
 import { createTodolistTC } from "@/features/todolists/model/todolists-slice"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { Todolists } from "@/features/todolists/ui/Todolists/Todolists.tsx"
+import { useAppDispatch } from "@/common/hooks/useAppDispatch"
+import { Todolists } from "@/features/todolists/ui/Todolists/Todolists"
 
 export const Main = () => {
   const dispatch = useAppDispatch()

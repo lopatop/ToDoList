@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import { changeFilterAC } from "@/features/todolists/model/todolists-slice.ts"
-import { onClickFilterHandlerType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem.tsx"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { filterButtonContainerStyle } from "./FilterBittons.styles.ts"
+import { changeFilterAC } from "@/features/todolists/model/todolists-slice"
+import { onClickFilterHandlerType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem"
+import { useAppDispatch } from "@/common/hooks/useAppDispatch"
+import { filterButtonContainerStyle } from "./FilterBittons.styles"
 
 type TodolistPropsType = {
   todolistId: string

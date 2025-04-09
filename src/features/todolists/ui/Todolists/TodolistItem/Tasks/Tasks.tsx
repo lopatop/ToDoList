@@ -1,14 +1,14 @@
 import List from "@mui/material/List"
-import { onClickFilterHandlerType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem.tsx"
+import { onClickFilterHandlerType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
-import { selectTasks } from "@/features/todolists/model/tasks-selectors.ts"
-import { TaskItem } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.tsx"
-import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
-import { TaskStatus } from "@/common/enums/enums.ts"
+import { useAppSelector } from "@/common/hooks/useAppSelector"
+import { selectTasks } from "@/features/todolists/model/tasks-selectors"
+import { TaskItem } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem"
+import { DomainTask } from "@/features/todolists/api/tasksApi.types"
+import { TaskStatus } from "@/common/enums/enums"
 import { useAppDispatch } from "@/common/hooks"
 import { useEffect } from "react"
-import { fetchTasksTC } from "@/features/todolists/model/tasks-slice.ts"
+import { fetchTasksTC } from "@/features/todolists/model/tasks-slice"
 
 type TodolistPropsType = {
   todolistId: string
