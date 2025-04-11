@@ -5,29 +5,28 @@ import { TodolistTitle } from "@/features/todolists/ui/Todolists/TodolistItem/To
 import { Tasks } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks"
 import { FilterButtons } from "@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons"
 import { createTaskTC } from "@/features/todolists/model/tasks-slice"
+import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 
 export type onClickFilterHandlerType = "all" | "active" | "completed"
 
 type TodolistPropsType = {
-  todolistId: string
-  title: string
-  filter: onClickFilterHandlerType
+  todolist: DomainTodolist
 }
 
 export const TodolistItem = (props: TodolistPropsType) => {
-  const { todolistId, filter, title } = props
+  const { todolist } = props
   const dispatch = useAppDispatch()
 
   const addTaskHandler = (titleTasks: string) => {
-    dispatch(createTaskTC({ todolistId, title: titleTasks }))
+    dispatch(createTaskTC({ todolistId: todolist.id, title: titleTasks }))
   }
 
   return (
     <div className="container">
-      <TodolistTitle todolistId={todolistId} title={title} />
-      <CreateItemForm addItem={addTaskHandler} />
-      <Tasks todolistId={todolistId} filter={filter} title={title} />
-      <FilterButtons filter={filter} title={title} todolistId={todolistId} />
+      <TodolistTitle todolist={todolist} disabled={todolist.entityStatus === "loading"} />
+      <CreateItemForm addItem={addTaskHandler} disabled={todolist.entityStatus === "loading"} />
+      <Tasks todolist={todolist} disabled={todolist.entityStatus === "loading"} />
+      <FilterButtons todolist={todolist} />
     </div>
   )
 }

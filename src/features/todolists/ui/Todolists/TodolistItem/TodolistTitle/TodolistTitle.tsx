@@ -5,21 +5,21 @@ import { changeTodolistTitleTC, deleteTodolistTC } from "@/features/todolists/mo
 import { useAppDispatch } from "@/common/hooks/useAppDispatch"
 
 type TodolistPropsType = {
-  todolistId: string
-  title: string
+  todolist: DomainTodolist
+  disabled: boolean
 }
 
 export const TodolistTitle = (props: TodolistPropsType) => {
-  const { todolistId, title } = props
+  const { todolist } = props
 
   const dispatch = useAppDispatch()
 
   const onClickDeleteTodolistHandler = () => {
-    dispatch(deleteTodolistTC({ id: todolistId }))
+    dispatch(deleteTodolistTC({ id: todolist.id }))
   }
 
   const removeTitleTodolistHandler = (newTitle: string) => {
-    dispatch(changeTodolistTitleTC({ id: todolistId, title: newTitle }))
+    dispatch(changeTodolistTitleTC({ id: todolist.id, title: newTitle }))
   }
 
   return (
