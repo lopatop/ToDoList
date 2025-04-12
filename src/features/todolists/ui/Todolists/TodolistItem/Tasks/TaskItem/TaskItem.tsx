@@ -1,21 +1,22 @@
 import ListItem from "@mui/material/ListItem"
 import Box from "@mui/material/Box"
 import Checkbox from "@mui/material/Checkbox"
-import { changeTaskStatusTC, changeTaskTitleTC, deleteTasksTC } from "@/features/todolists/model/tasks-slice.ts"
-import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan.tsx"
+import { deleteTasksTC, updateTaskTC } from "@/features/todolists/model/tasks-slice"
+import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan"
 import IconButton from "@mui/material/IconButton"
 import Clear from "@mui/icons-material/Clear"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { listItemStyle } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts"
-import { TaskStatus } from "@/common/enums/enums.ts"
-import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
+import { useAppDispatch } from "@/common/hooks/useAppDispatch"
+import { listItemStyle } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles"
+import { TaskStatus } from "@/common/enums/enums"
+import { DomainTask } from "@/features/todolists/api/tasksApi.types"
 
 type TaskProps = {
   t: DomainTask
   todolistId: string
+  disabled: boolean
 }
 
-export const TaskItem = ({ t, todolistId }: TaskProps) => {
+export const TaskItem = ({ disabled, t, todolistId }: TaskProps) => {
   const dispatch = useAppDispatch()
 
   return (
@@ -24,31 +25,51 @@ export const TaskItem = ({ t, todolistId }: TaskProps) => {
         <Checkbox
           size={"small"}
           checked={t.status === TaskStatus.Completed}
+          disabled={disabled}
           onChange={(e) =>
             dispatch(
-              changeTaskStatusTC({
+              updateTaskTC({
                 todolistId,
-                status: e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New,
-                task: t,
+                taskId: t.id,
+                domainModel: {
+                  title: t.title,
+                  description: t.description,
+                  status: e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New,
+                  priority: t.priority,
+                  startDate: t.startDate,
+                  deadline: t.deadline,
+                },
               }),
             )
           }
         />
         <EditableSpan
+          disabled={disabled}
           isDone={t.status === TaskStatus.Completed}
           title={t.title}
           changeTitleItem={(newTitleTask) =>
             dispatch(
-              changeTaskTitleTC({
+              updateTaskTC({
                 todolistId,
-                title: newTitleTask,
                 taskId: t.id,
+                domainModel: {
+                  title: newTitleTask,
+                  description: t.description,
+                  status: t.status,
+                  priority: t.priority,
+                  startDate: t.startDate,
+                  deadline: t.deadline,
+                },
               }),
             )
           }
         />
       </Box>
-      <IconButton aria-label="delete" onClick={() => dispatch(deleteTasksTC({ todolistId, taskId: t.id }))}>
+      <IconButton
+        aria-label="delete"
+        onClick={() => dispatch(deleteTasksTC({ todolistId, taskId: t.id }))}
+        disabled={disabled}
+      >
         <Clear />
       </IconButton>
     </ListItem>
