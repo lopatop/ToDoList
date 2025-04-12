@@ -7,10 +7,11 @@ import AddIcon from "@mui/icons-material/Add"
 
 type CreateItemFormPropsType = {
   addItem: (title: string) => void
+  disabled: boolean
 }
 
 export const CreateItemForm = (props: CreateItemFormPropsType) => {
-  const { addItem } = props
+  const { addItem, disabled } = props
 
   const [addTitle, setAddTitle] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -34,6 +35,7 @@ export const CreateItemForm = (props: CreateItemFormPropsType) => {
     }
   }
   const inputError = !addTitle.trim() || addTitle.length > 20
+
   const ButtonStyle = { minHeight: "40px", maxHeight: "40px" }
 
   return (
@@ -48,9 +50,10 @@ export const CreateItemForm = (props: CreateItemFormPropsType) => {
         onChange={onChangeInputHandler}
         size={"small"}
         helperText={inputError}
+        disabled={disabled}
       />
 
-      <Button sx={ButtonStyle} onClick={addTasksFoo} disabled={inputError} variant="contained">
+      <Button sx={ButtonStyle} onClick={addTasksFoo} disabled={inputError || disabled} variant="contained">
         <AddIcon />
       </Button>
     </Box>

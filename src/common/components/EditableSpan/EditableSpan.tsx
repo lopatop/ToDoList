@@ -4,10 +4,11 @@ type EditableSpanPropsType = {
   title: string
   changeTitleItem: (newTitleTask: string) => void
   isDone?: boolean
+  disabled?: boolean
 }
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
-  const { title, changeTitleItem, isDone } = props
+  const { title, changeTitleItem, isDone, disabled } = props
 
   const [isEditMode, setIsEditMode] = useState<boolean>(false)
   const [newTitle, setNewTitle] = useState(title)
@@ -36,7 +37,7 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
     }
   }
 
-  return isEditMode ? (
+  return isEditMode && !disabled ? (
     <input
       value={newTitle}
       onBlur={editeModeClosed}
