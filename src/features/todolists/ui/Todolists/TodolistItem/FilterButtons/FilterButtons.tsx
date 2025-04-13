@@ -1,23 +1,21 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import { changeFilterAC } from "@/features/todolists/model/todolists-slice"
+import { changeFilterAC, DomainTodolist } from "@/features/todolists/model/todolists-slice"
 import { onClickFilterHandlerType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch"
 import { filterButtonContainerStyle } from "./FilterBittons.styles"
 
 type TodolistPropsType = {
-  todolistId: string
-  title: string
-  filter: onClickFilterHandlerType
+  todolist: DomainTodolist
 }
 
 export const FilterButtons = (props: TodolistPropsType) => {
-  const { todolistId, filter } = props
+  const { todolist } = props
 
   const dispatch = useAppDispatch()
 
-  const onClickFilteredTasksHandler = (title: onClickFilterHandlerType) => {
-    dispatch(changeFilterAC({ todolistId, filter: title }))
+  const onClickFilteredTasksHandler = (filter: onClickFilterHandlerType) => {
+    dispatch(changeFilterAC({ todolistId: todolist.id, filter }))
   }
 
   return (
@@ -25,7 +23,7 @@ export const FilterButtons = (props: TodolistPropsType) => {
       <Button
         variant={"contained"}
         size={"small"}
-        color={filter === "all" ? "secondary" : "primary"}
+        color={todolist.filter === "all" ? "secondary" : "primary"}
         onClick={() => {
           onClickFilteredTasksHandler("all")
         }}
@@ -35,7 +33,7 @@ export const FilterButtons = (props: TodolistPropsType) => {
       <Button
         variant={"contained"}
         size={"small"}
-        color={filter === "active" ? "secondary" : "primary"}
+        color={todolist.filter === "active" ? "secondary" : "primary"}
         onClick={() => {
           onClickFilteredTasksHandler("active")
         }}
@@ -45,7 +43,7 @@ export const FilterButtons = (props: TodolistPropsType) => {
       <Button
         variant={"contained"}
         size={"small"}
-        color={filter === "completed" ? "secondary" : "primary"}
+        color={todolist.filter === "completed" ? "secondary" : "primary"}
         onClick={() => {
           onClickFilteredTasksHandler("completed")
         }}
