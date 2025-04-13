@@ -4,8 +4,9 @@ import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material"
 import { useSelector } from "react-redux"
 import { getTheme } from "@/common/theme"
-import { Main } from "@/app/Main.tsx"
-import { selectThemeMode } from "@/app/app-slice.ts"
+import { Main } from "@/app/Main"
+import { selectThemeMode } from "@/app/app-slice"
+import { ErrorSnackbar } from "@/common/components/ErrorSnackbar/ErrorSnackbar.tsx"
 
 function App() {
   const themeMode = useSelector(selectThemeMode)
@@ -17,6 +18,7 @@ function App() {
         <CssBaseline />
         <Header />
         <Main />
+        <ErrorSnackbar />
       </div>
     </ThemeProvider>
   )
