@@ -65,6 +65,7 @@ export const tasksSlice = createAppSlice({
           dispatch(setAppStatusAC({ status: "loading" }))
           const res = await tasksApi.createTasks(payload)
           if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setAppStatusAC({ status: "succeeded" }))
             return {
               task: res.data.data.item,
               todolistId: payload.todolistId,
