@@ -6,7 +6,7 @@ export type FieldError = {
 export type BaseResponse<T = {}> = {
   data: T
   messages: string[]
-  fieldsErrors: FieldError[]
+  fieldsErrors?: FieldError[]
   resultCode: number
 }
 
