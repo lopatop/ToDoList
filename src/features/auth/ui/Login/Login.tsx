@@ -8,24 +8,28 @@ import Button from "@mui/material/Button"
 import Checkbox from "@mui/material/Checkbox"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
-
-type Inputs = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Inputs, loginSchema } from "@/features/auth/lib/schemas"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const theme = getTheme(themeMode)
 
   const {
-    register,
-    handleSubmit,
     reset,
+    handleSubmit,
     control,
+    register,
     formState: { errors },
-  } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false }, mode: "onChange" })
+  } = useForm<Inputs>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
+    mode: "onChange",
+  })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data)
@@ -56,20 +60,16 @@ export const Login = () => {
             </p>
           </FormLabel>
           <FormGroup>
-            <TextField
-              label="Email"
-              margin="normal"
-              error={!!errors.email}
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Incorrect email address",
-                },
-              })}
-            />
+            <TextField label="Email" margin="normal" error={!!errors.email} {...register("email")} />
             {errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}
-            <TextField type="password" label="Password" margin="normal" {...register("password")} />
+            <TextField
+              type="password"
+              label="Password"
+              margin="normal"
+              error={!!errors.password}
+              {...register("password")}
+            />
+            {errors.password && <span className={styles.errorMessage}>{errors.password.message}</span>}
             <FormControlLabel
               label="Remember me"
               control={
