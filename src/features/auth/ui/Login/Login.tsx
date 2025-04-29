@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/common/hooks"
+import {useAppDispatch, useAppSelector} from "@/common/hooks"
 import { selectThemeMode } from "@/app/app-slice.ts"
 import { getTheme } from "@/common/theme"
 import Grid from "@mui/material/Grid"
@@ -9,19 +9,29 @@ import Checkbox from "@mui/material/Checkbox"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Inputs, loginSchema } from "@/features/auth/lib/schemas"
+import {InputsLoginType, loginSchema} from "@/features/auth/lib/schemas"
+import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice.ts";
+import {Navigate} from "react-router";
+import {Path} from "@/common/routing/Routing.tsx";
+
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const theme = getTheme(themeMode)
+  const dispatch = useAppDispatch()
+
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+
+
 
   const {
-    reset,
+    // reset,
     handleSubmit,
     control,
     register,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<InputsLoginType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -31,10 +41,15 @@ export const Login = () => {
     mode: "onChange",
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
-    reset()
+  const onSubmit: SubmitHandler<InputsLoginType> = (data) => {
+    dispatch(loginTC(data))
+    // reset()
   }
+
+  if(isLoggedIn){
+    return <Navigate to={Path.Main} />
+  }
+
   return (
     <Grid container justifyContent={"center"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -60,7 +75,12 @@ export const Login = () => {
             </p>
           </FormLabel>
           <FormGroup>
-            <TextField label="Email" margin="normal" error={!!errors.email} {...register("email")} />
+            <TextField
+                label="Email"
+                margin="normal"
+                error={!!errors.email}
+                {...register("email")}
+               />
             {errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}
             <TextField
               type="password"
