@@ -7,7 +7,7 @@ import AddIcon from "@mui/icons-material/Add"
 
 type CreateItemFormPropsType = {
   addItem: (title: string) => void
-  disabled: boolean
+  disabled?: boolean
 }
 
 export const CreateItemForm = (props: CreateItemFormPropsType) => {
