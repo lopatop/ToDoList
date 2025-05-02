@@ -9,6 +9,8 @@ import { useAppDispatch } from "@/common/hooks/useAppDispatch"
 import { listItemStyle } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles"
 import { TaskStatus } from "@/common/enums/enums"
 import { DomainTask } from "@/features/todolists/api/tasksApi.types"
+import { useAppSelector } from "@/common/hooks"
+import { selectStatus } from "@/app/app-slice.ts"
 
 type TaskProps = {
   t: DomainTask
@@ -18,6 +20,7 @@ type TaskProps = {
 
 export const TaskItem = ({ disabled, t, todolistId }: TaskProps) => {
   const dispatch = useAppDispatch()
+  const status = useAppSelector(selectStatus)
 
   return (
     <ListItem sx={listItemStyle}>
@@ -43,6 +46,7 @@ export const TaskItem = ({ disabled, t, todolistId }: TaskProps) => {
             )
           }
         />
+
         <EditableSpan
           disabled={disabled}
           isDone={t.status === TaskStatus.Completed}
@@ -68,7 +72,7 @@ export const TaskItem = ({ disabled, t, todolistId }: TaskProps) => {
       <IconButton
         aria-label="delete"
         onClick={() => dispatch(deleteTasksTC({ todolistId, taskId: t.id }))}
-        disabled={disabled}
+        disabled={disabled || status === "loading"}
       >
         <Clear />
       </IconButton>
