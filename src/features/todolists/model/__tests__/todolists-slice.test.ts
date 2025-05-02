@@ -1,74 +1,75 @@
-import { expect, test } from "vitest"
-
-import {
-  changeFilterAC,
-  changeTodolistTitleTC,
-  deleteTodolistTC,
-  DomainTodolist,
-  todolistsSlice,
-} from "../todolists-slice"
 import { nanoid } from "@reduxjs/toolkit"
+import { beforeEach, expect, test } from "vitest"
+import {
+  changeFilterAC, changeTodolistStatusAC,
+  changeTodolistTitleTC,
+  createTodolistTC,
+  deleteTodolistTC,
+  type DomainTodolist,
+  todolistsReducer,
+} from "../todolists-slice"
+import {RequestStatus} from "@/common/types";
+
+let todolistId1: string
+let todolistId2: string
+let startState: DomainTodolist[] = []
+
+beforeEach(() => {
+  todolistId1 = nanoid()
+  todolistId2 = nanoid()
+
+  startState = [
+    { id: todolistId1, title: "What to learn", addedDate: "", order: 0, filter: "all", entityStatus: "idle" },
+    { id: todolistId2, title: "What to buy", addedDate: "", order: 0, filter: "all", entityStatus: "idle" },
+  ]
+})
 
 test("correct todolist should be deleted", () => {
-  const todolistId1 = nanoid()
-  const todolistId2 = nanoid()
-
-  const startState: DomainTodolist[] = [
-    { id: todolistId1, title: "What to learn", filter: "all" },
-    { id: todolistId2, title: "What to buy", filter: "all" },
-  ]
-
-  const action = deleteTodolistTC({ todolistId: todolistId1 })
-  const endState = todolistsSlice(startState, action)
+  //удаление тудулиста
+  const endState = todolistsReducer(
+    startState,
+    deleteTodolistTC.fulfilled({ id: todolistId1 }, "requestId", { id: todolistId1 }),
+  )
 
   expect(endState.length).toBe(1)
   expect(endState[0].id).toBe(todolistId2)
 })
 
-test("correct todolist should be filter", () => {
-  const todolistId1 = nanoid()
-  const todolistId2 = nanoid()
-
-  const startState: DomainTodolist[] = [
-    { id: todolistId1, title: "What to learn", filter: "all" },
-    { id: todolistId2, title: "What to buy", filter: "all" },
-  ]
-
-  const action = changeFilterAC({ todolistId: todolistId1, filter: "active" })
-  const endState = todolistsSlice(startState, action)
-
-  expect(endState[0].filter).toBe("active")
-  expect(endState[1].filter).toBe("all")
-})
-
 test("correct todolist should be created", () => {
-  const todolistId1 = nanoid()
-  const todolistId2 = nanoid()
-
-  const startState: DomainTodolist[] = [
-    { id: todolistId1, title: "What to learn", filter: "all" },
-    { id: todolistId2, title: "What to buy", filter: "all" },
-  ]
-
+  //создание тудулиста
   const title = "New todolist"
-  const endState = todolistsSlice(startState, createTodolistAC(title))
+  const todolist:DomainTodolist = { id: "todolistId3", title, addedDate: "", order: 0, filter: "all", entityStatus: "idle"  }
+  const endState = todolistsReducer(startState, createTodolistTC.fulfilled(todolist, "requestId", {title}))
 
   expect(endState.length).toBe(3)
-  expect(endState[2].title).toBe(title)
+  expect(endState[0].title).toBe(title)
 })
 
 test("correct todolist should change its title", () => {
-  const todolistId1 = nanoid()
-  const todolistId2 = nanoid()
-
-  const startState: DomainTodolist[] = [
-    { id: todolistId1, title: "What to learn", filter: "all" },
-    { id: todolistId2, title: "What to buy", filter: "all" },
-  ]
-
+  //изменение тайтла тудулиста
   const title = "New title"
-  const endState = todolistsSlice(startState, changeTodolistTitleTC({ todolistId: todolistId2, newTitle: title }))
+  const endState = todolistsReducer(
+    startState,
+    changeTodolistTitleTC.fulfilled({ id: todolistId2, title }, "requestId", { id: todolistId2, title }),
+  )
 
   expect(endState[0].title).toBe("What to learn")
   expect(endState[1].title).toBe(title)
+})
+
+test("correct todolist should change its filter", () => {
+  // изменение состояния фильра тудулиста
+  const filter = "completed"
+  const endState = todolistsReducer(startState, changeFilterAC({ todolistId: todolistId2, filter }))
+
+  expect(endState[0].filter).toBe("all")
+  expect(endState[1].filter).toBe(filter)
+})
+test("correct todolist should change its status", () => {
+  //изменение состояния статуса
+  const status:RequestStatus = "succeeded"
+  const endState = todolistsReducer(startState, changeTodolistStatusAC({todolistId: todolistId2, entityStatus:status}))
+  expect(endState[0].entityStatus).toBe("idle")
+  expect(endState[1].entityStatus).toBe(status)
+
 })
