@@ -1,4 +1,4 @@
-import { Todolist } from "@/features/todolists/api"
+import { Todolist, TodolistSchema } from "@/features/todolists/api"
 import { todolistsApi } from "@/features/todolists/api"
 import { onClickFilterHandlerType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem"
 import { createAppSlice } from "@/common/utils"
@@ -7,11 +7,14 @@ import { RequestStatus } from "@/common/types"
 import { ResultCode } from "@/common/enums/enums.ts"
 import { handleServerAppError } from "@/common/utils/handleServerAppError.ts"
 import { handleServerNetworkError } from "@/common/utils/handleServerNetworkError.ts"
+import {clearDataAC} from "@/common/actions";
 
 export type DomainTodolist = Todolist & {
   filter: onClickFilterHandlerType
   entityStatus: RequestStatus
 }
+
+// TODO  добавить ентити статус в такси и типизацию! сделать АС и задизейблить кнопку удаления тасок! При удаление диспатчим новый статус !!!!!!!!!!!!!!!!
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -22,10 +25,11 @@ export const todolistsSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: "loading" }))
           const res = await todolistsApi.getTodolists()
+          const todolists = TodolistSchema.array().parse(res.data)
           dispatch(setAppStatusAC({ status: "succeeded" }))
-          return { todolists: res.data }
-        } catch {
-          dispatch(setAppStatusAC({ status: "failed" }))
+          return { todolists }
+        } catch (error) {
+          handleServerNetworkError(error, dispatch)
           return rejectWithValue(null)
         }
       },
@@ -40,6 +44,7 @@ export const todolistsSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: "loading" }))
           const res = await todolistsApi.changeTodolistsTitle(payload)
+          console.log(res.data)
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: "succeeded" }))
             return payload
@@ -94,9 +99,10 @@ export const todolistsSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: "loading" }))
           const res = await todolistsApi.createTodolist(payload)
+          const todolist = TodolistSchema.parse(res.data.data.item)
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: "succeeded" }))
-            return res.data.data.item
+            return todolist
           } else {
             handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)
@@ -126,6 +132,12 @@ export const todolistsSlice = createAppSlice({
       }
     }),
   }),
+  extraReducers: (builder)=>{
+    builder
+        .addCase(clearDataAC, () => {
+          return []
+        })
+  }
 })
 
 export const {
