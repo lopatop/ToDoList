@@ -6,7 +6,7 @@ import { TodolistItem } from "@/features/todolists/ui/Todolists/TodolistItem/Tod
 import { paperStyle } from "@/features/todolists/ui/Todolists/Todolists.styles"
 import { useEffect } from "react"
 import { useAppDispatch } from "@/common/hooks"
-import { fetchTodolistsTC } from "@/features/todolists/model/todolists-slice"
+import { fetchTodolistsTC } from "@/features/todolists/model/todolists-slice.ts"
 
 export const Todolists = () => {
   const todolist = useAppSelector(selectTodolists)
