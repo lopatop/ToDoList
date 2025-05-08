@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "@/common/hooks"
-import { selectThemeMode } from "@/app/app-slice.ts"
+import {selectIsLoggedIn, selectThemeMode, setIsLoggedInAC} from "@/app/app-slice.ts"
 import { getTheme } from "@/common/theme"
 import Grid from "@mui/material/Grid"
 import { FormControl, FormControlLabel, FormGroup, FormLabel } from "@mui/material"
@@ -10,23 +10,25 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {InputsLoginType, loginSchema} from "@/features/auth/lib/schemas"
-import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice.ts";
 import {Navigate} from "react-router";
 import {Path} from "@/common/routing/Routing.tsx";
+import {useLoginMutation} from "@/features/auth/api/authApi.ts";
+import {ResultCode} from "@/common/enums";
+import {AUTH_TOKEN} from "@/common/constant";
 
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const theme = getTheme(themeMode)
   const dispatch = useAppDispatch()
-
+  const [login] = useLoginMutation()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
 
 
 
   const {
-    // reset,
+    reset,
     handleSubmit,
     control,
     register,
@@ -42,8 +44,13 @@ export const Login = () => {
   })
 
   const onSubmit: SubmitHandler<InputsLoginType> = (data) => {
-    dispatch(loginTC(data))
-    // reset()
+    login(data).then((res) => {
+      if (res.data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+        localStorage.setItem(AUTH_TOKEN, res.data.data.token)
+        reset()
+      }
+    })
   }
 
   if(isLoggedIn){
