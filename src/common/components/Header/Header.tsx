@@ -15,7 +15,7 @@ import {Path} from "@/common/routing/Routing.tsx";
 import {AUTH_TOKEN} from "@/common/constant";
 import {useLogoutMutation} from "@/features/auth/api/authApi.ts";
 import {ResultCode} from "@/common/enums";
-import {clearDataAC} from "@/common/actions";
+import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
 
 export function Header() {
     const themeMode = useAppSelector(selectThemeMode)
@@ -35,8 +35,10 @@ export function Header() {
             if (res.data?.resultCode === ResultCode.Success) {
                 dispatch(setIsLoggedInAC({isLoggedIn: false}))
                 localStorage.removeItem(AUTH_TOKEN)
-                dispatch(clearDataAC())
             }
+        }).then(()=>{
+            dispatch(todolistsApi.util.invalidateTags(["Todolist", "Task"]))
+           // location.reload() тоже самое что и F5
         })
     }
 
@@ -48,7 +50,7 @@ export function Header() {
 
     return (
         <Box sx={{flexGrow: 1, pb: "30px"}}>
-            <AppBar position="static">
+            <AppBar position="static" style={{width:'100vw'}}>
                 <Toolbar>
                     <IconButton size="large" edge="start" color="inherit" aria-label="menu"
                                 sx={{mr: 2}}><MenuIcon/></IconButton>
