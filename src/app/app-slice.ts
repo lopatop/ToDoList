@@ -1,4 +1,5 @@
-import {RequestStatus} from "@/common/types"
+import {RequestStatus} from "@/common/types/types.ts";
+
 
 export type ThemeMode = "dark" | "light"
 
