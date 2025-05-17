@@ -1,7 +1,7 @@
-import {Todolist} from "@/features/todolists/api/todolistsApi.types.ts";
-import {BaseResponse} from "@/common/types";
-import {DomainTodolist} from "@/features/todolists/model/todolists-slice.ts";
+import {CreateTodolistResponse, Todolist} from "@/features/todolists/api/todolistsApi.types.ts";
 import {baseApi} from "@/app/baseApi.ts";
+import {DomainTodolist} from "@/features/todolists/lib/types";
+import {DefaultResponse} from "@/common/types/types.ts";
 
 export const todolistsApi = baseApi.injectEndpoints({
     endpoints: build => ({
@@ -12,7 +12,7 @@ export const todolistsApi = baseApi.injectEndpoints({
                 return res.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
             }
         }),
-        changeTodolistTitle: build.mutation<BaseResponse, { id: string; title: string }>({
+        changeTodolistTitle: build.mutation<DefaultResponse, { id: string; title: string }>({
             invalidatesTags: ["Todolist"],
             query: ({id, title}) => ({
                 url: `/todo-lists/${id}`,
@@ -20,14 +20,14 @@ export const todolistsApi = baseApi.injectEndpoints({
                 body: {title}
             })
         }),
-        deleteTodolist: build.mutation<BaseResponse, string>({
+        deleteTodolist: build.mutation<DefaultResponse, string>({
             invalidatesTags: ["Todolist"],
             query: (id) => ({
                 url: `/todo-lists/${id}`,
                 method: "DELETE"
             })
         }),
-        createTodolist: build.mutation<BaseResponse<{ item: Todolist }>, string>({
+        createTodolist: build.mutation<CreateTodolistResponse, string>({
             invalidatesTags: ["Todolist"],
             query: (title) => ({
                 url: `/todo-lists`,
