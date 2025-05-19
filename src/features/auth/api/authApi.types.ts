@@ -1,13 +1,5 @@
-import {string, z} from "zod";
+import {z} from "zod";
 import {baseResponseSchema} from "@/common/types/types.ts";
-
-
-// export const meBaseResponseSchema = baseResponseSchema(z.object({
-//     id: z.number().int(),
-//     email: z.string().email(),
-//     login: z.string(),
-// }))
-
 
 export type meBaseResponse = {
     resultCode: number,
@@ -19,9 +11,18 @@ export type meBaseResponse = {
     }
 }
 
-export const loginBaseResponseSchema = baseResponseSchema(z.object({
+export const loginBaseResponseSchema = z.union([
+  baseResponseSchema(z.object({
     userId: z.number().int(),
-    token: string()
-}))
+    token: z.string()
+  })),
+  baseResponseSchema(z.object({}))
+])
 
 export type LoginBaseResponse = z.infer<typeof loginBaseResponseSchema>
+
+export const captchaResponseSchema = z.object({
+    url: z.string()
+})
+
+export type CaptchaResponse = z.infer<typeof captchaResponseSchema>
