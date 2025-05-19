@@ -24,9 +24,9 @@ export const TodolistItem = (props: TodolistPropsType) => {
 
   return (
     <div className="container">
-      <TodolistTitle todolist={todolist} disabled={todolist.entityStatus === "loading"} />
-      <CreateItemForm addItem={createTaskHandler} disabled={todolist.entityStatus === "loading"} />
-      <Tasks todolist={todolist} disabled={todolist.entityStatus === "loading"} />
+      <TodolistTitle todolist={todolist}/>
+      <CreateItemForm addItem={createTaskHandler} />
+      <Tasks todolist={todolist} />
       <FilterButtons todolist={todolist} />
     </div>
   )

@@ -15,10 +15,9 @@ import {EditableSpan} from "@/common/components";
 type TaskProps = {
     t: DomainTask
     todolistId: string
-    disabled: boolean
 }
 
-export const TaskItem = ({disabled, t, todolistId}: TaskProps) => {
+export const TaskItem = ({t, todolistId}: TaskProps) => {
     const [deleteTask, {isLoading}] = useDeleteTaskMutation()
     const [updateTask] = useUpdateTaskMutation()
     const status = useAppSelector(selectStatus)
@@ -58,14 +57,12 @@ export const TaskItem = ({disabled, t, todolistId}: TaskProps) => {
                 <Checkbox
                     size={"small"}
                     checked={t.status === TaskStatus.Completed}
-                    disabled={disabled || isLoading}
+                    disabled={isLoading}
                     onChange={updateStatusTask}
 
                 />
 
                 <EditableSpan
-                    isLoading ={isLoading}
-                    disabled={disabled}
                     isDone={t.status === TaskStatus.Completed}
                     title={t.title}
                     changeTitleItem={updateTitleTask}
@@ -74,7 +71,7 @@ export const TaskItem = ({disabled, t, todolistId}: TaskProps) => {
             <IconButton
                 aria-label="delete"
                 onClick={deleteTaskHandler}
-                disabled={disabled || status === "loading"}
+                disabled={status === "loading"}
             >
                 <Clear/>
             </IconButton>
