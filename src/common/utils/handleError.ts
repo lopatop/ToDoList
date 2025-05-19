@@ -36,10 +36,11 @@ export const handleError = (
         api.dispatch(setAppErrorAC({error}))
     }
 
-    if ((result.data as { resultCode: ResultCode }).resultCode === ResultCode.Error) {
-        const messages = (result.data as { messages: string[] }).messages
-        error = messages.length ? messages[0] : error
-        api.dispatch(setAppErrorAC({error}))
-    }
 
+    const code = (result.data as { resultCode: ResultCode }).resultCode
+    if(code === ResultCode.Error || code === ResultCode.CaptchaError ){
+        const messages = (result.data as { messages: string[] }).messages
+            error = messages.length ? messages[0] : error
+            api.dispatch(setAppErrorAC({error}))
+    }
 }
