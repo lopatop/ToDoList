@@ -9,7 +9,7 @@ import {selectStatus} from "@/app/app-slice.ts"
 import {useDeleteTaskMutation, useUpdateTaskMutation} from "@/features/todolists/api/tasksApi.ts";
 import {ChangeEvent} from "react";
 import {DomainTask, UpdateTaskModel} from "@/features/todolists/api";
-import {listItemStyle} from "./TaskItem.styles";
+import {listItemStyle, taskInfoBoxStyle, taskTitleBoxStyle, wrapperBoxStyle} from "./TaskItem.styles";
 import {EditableSpan} from "@/common/components";
 
 type TaskProps = {
@@ -53,28 +53,32 @@ export const TaskItem = ({t, todolistId}: TaskProps) => {
 
     return (
         <ListItem sx={listItemStyle}>
-            <Box>
-                <Checkbox
-                    size={"small"}
-                    checked={t.status === TaskStatus.Completed}
-                    disabled={isLoading}
-                    onChange={updateStatusTask}
-
-                />
-
+          <Box sx={wrapperBoxStyle}>
+            <Box sx={taskInfoBoxStyle}>
+              <Checkbox
+                size="small"
+                checked={t.status === TaskStatus.Completed}
+                disabled={isLoading}
+                onChange={updateStatusTask}
+              />
+              <Box
+                sx={taskTitleBoxStyle}
+              >
                 <EditableSpan
-                    isDone={t.status === TaskStatus.Completed}
-                    title={t.title}
-                    changeTitleItem={updateTitleTask}
+                  isDone={t.status === TaskStatus.Completed}
+                  title={t.title}
+                  changeTitleItem={updateTitleTask}
                 />
+              </Box>
             </Box>
             <IconButton
-                aria-label="delete"
-                onClick={deleteTaskHandler}
-                disabled={status === "loading"}
+              aria-label="delete"
+              onClick={deleteTaskHandler}
+              disabled={status === "loading"}
             >
-                <Clear/>
+              <Clear />
             </IconButton>
+          </Box>
         </ListItem>
     )
 }
