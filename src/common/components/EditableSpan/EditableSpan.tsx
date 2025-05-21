@@ -1,4 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useState } from "react"
+import {editableSpanStyle} from "@/common/components/EditableSpan/EditableSpan.styles.ts";
 
 type EditableSpanPropsType = {
   title: string
@@ -46,10 +47,12 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
     />
   ) : (
     <span
-      style={{ opacity: isDone ? 0.5 : 1, textDecoration: isDone ? "line-through" : "none" }}
+      style={editableSpanStyle(isDone)}
       onDoubleClick={editeModeOpen}
     >
-      {title}
+      <span>
+        {title}
+      </span>
     </span>
   )
 }
