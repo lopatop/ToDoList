@@ -30,18 +30,23 @@ export const TodolistTitle = (props: TodolistPropsType) => {
         changeTodolistTitle({id: todolist.id, title: newTitle})
     }
 
+    const iconButtonStyle = { position: "absolute", right: 20, top: 20 }
+
     return (
         <h3>
-            <EditableSpan
-                title={todolist.title}
-                changeTitleItem={changeTitleTodolistHandler}
-            />
-            <IconButton
-                aria-label="delete"
-                onClick={deleteTodolistHandler}
-            >
-                <Delete/>
-            </IconButton>
+            <span >
+                <EditableSpan
+                    title={todolist.title}
+                    changeTitleItem={changeTitleTodolistHandler}
+                />
+                <IconButton
+                    sx={iconButtonStyle}
+                    aria-label="delete"
+                    onClick={deleteTodolistHandler}
+                >
+                    <Delete />
+                </IconButton>
+            </span>
         </h3>
     )
 }
