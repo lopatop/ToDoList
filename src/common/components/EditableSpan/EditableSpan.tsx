@@ -1,5 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useState } from "react"
-import {editableSpanStyle} from "@/common/components/EditableSpan/EditableSpan.styles.ts";
+import {editableSpanStyle} from "@/common/components";
+
 
 type EditableSpanPropsType = {
   title: string
