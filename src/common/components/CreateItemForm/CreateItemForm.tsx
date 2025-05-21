@@ -34,7 +34,7 @@ export const CreateItemForm = (props: CreateItemFormPropsType) => {
       addTasksFoo()
     }
   }
-  const inputError = !addTitle.trim() || addTitle.length > 20
+  const inputError = !addTitle.trim() || addTitle.length > 110
 
   const ButtonStyle = { minHeight: "40px", maxHeight: "40px" }
 

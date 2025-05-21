@@ -41,7 +41,7 @@ export const Tasks = (props: TodolistPropsType) => {
                 </List>
 
             ) : (
-                <span>Тасок нет</span>
+                <span>No tasks available</span>
             )}
             <TaskPagination totalCount={data?.totalCount || 0} page={page} setPage={setPage}
             />

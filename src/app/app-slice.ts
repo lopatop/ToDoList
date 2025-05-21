@@ -1,4 +1,4 @@
-import {RequestStatus} from "@/common/types/types.ts";
+import {RequestStatus} from "@/common/types";
 
 
 export type ThemeMode = "dark" | "light"
@@ -52,6 +52,6 @@ export const appSlice = createSlice({
     }),
 })
 
-export const {setAppStatusAC, changeThemeModeAC, setAppErrorAC, setIsLoggedInAC} = appSlice.actions
+export const {changeThemeModeAC, setAppErrorAC, setIsLoggedInAC} = appSlice.actions
 export const appReducer = appSlice.reducer
 export const {selectStatus, selectThemeMode, selectError, selectIsLoggedIn} = appSlice.selectors
