@@ -20,7 +20,7 @@ export const CreateItemForm = (props: CreateItemFormPropsType) => {
     if (!inputError) {
       addItem(addTitle.trim())
     } else {
-      setError("max 20 characters!")
+      setError("Error")
     }
     setAddTitle("")
   }

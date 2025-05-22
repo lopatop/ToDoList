@@ -1,10 +1,9 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import {  DomainTodolist } from "@/features/todolists/model/todolists-slice"
-import { onClickFilterHandlerType } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch"
 import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
 import {containerSx} from "@/common/styles";
+import {DomainTodolist, FilterValues} from "@/features/todolists/lib/types";
 
 type TodolistPropsType = {
   todolist: DomainTodolist
@@ -17,7 +16,7 @@ export const FilterButtons = ({todolist}: TodolistPropsType) => {
 
   const dispatch = useAppDispatch()
 
-  const onClickFilteredTasksHandler = (filter: onClickFilterHandlerType) => {
+  const onClickFilteredTasksHandler = (filter: FilterValues) => {
     dispatch(todolistsApi.util.updateQueryData('getTodolists', undefined, (todolists) => {
     const todo = todolists.find(t=> t.id === id)
         if (todo){
